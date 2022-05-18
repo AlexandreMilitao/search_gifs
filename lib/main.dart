@@ -8,5 +8,6 @@ void main() {
   // ignore: prefer_const_constructors
   runApp(MaterialApp(
     home: HomePage(),
+    theme: ThemeData(hintColor: Colors.white),
   ));
 }
