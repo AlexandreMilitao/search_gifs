@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, unnecessary_null_comparison, curly_braces_in_flow_control_structures, avoid_print, prefer_const_literals_to_create_immutables, prefer_const_constructors, duplicate_ignore
+// ignore_for_file: prefer_final_fields, unnecessary_null_comparison, curly_braces_in_flow_control_structures, avoid_print, prefer_const_literals_to_create_immutables, prefer_const_constructors, duplicate_ignore, avoid_unnecessary_containers
 
 import 'dart:convert';
 
@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
           "https://api.giphy.com/v1/gifs/trending?api_key=Z69gybwl8uDq1q8UueWLJiGULnjvJOuO&limit=20&rating=g"));
     else
       response = await http.get(Uri.parse(
-          "https://api.giphy.com/v1/gifs/search?api_key=Z69gybwl8uDq1q8UueWLJiGULnjvJOuO&q=$_search&limit=25&offset=$_offset&rating=g&lang=en"));
+          "https://api.giphy.com/v1/gifs/search?api_key=Z69gybwl8uDq1q8UueWLJiGULnjvJOuO&q=$_search&limit=19&offset=$_offset&rating=g&lang=en"));
 
     return json.decode(response.body);
   }
@@ -60,6 +60,11 @@ class _HomePageState extends State<HomePage> {
               ),
               style: TextStyle(color: Colors.white, fontSize: 18.0),
               textAlign: TextAlign.center,
+              onSubmitted: (text) {
+                setState(() {
+                  _search = text;
+                });
+              },
             ),
           ),
           Expanded(
@@ -92,25 +97,59 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  int _getCount(List data) {
+    if (_search == null) {
+      return data.length;
+    } else {
+      return data.length + 1;
+    }
+  }
+
   Widget _createGifTable(BuildContext context, AsyncSnapshot snapshot) {
     return GridView.builder(
       padding: EdgeInsets.all(10.0),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 10.0,
-        mainAxisExtent: 10.0,
+        mainAxisSpacing: 10.0,
       ),
-      itemCount: snapshot.data["data"].length,
+      itemCount: _getCount(snapshot.data["data"]),
       itemBuilder: (context, index) {
-        return GestureDetector(
-          child: Image.network(
-            snapshot.data["data"][index]["images"]["fixed_height"]["url"],
-            height: 300.0,
-            width: 300.0,
-
-            ///fit: BoxFit.cover,
-          ),
-        );
+        if (_search == null || index < snapshot.data["data"].length)
+          return GestureDetector(
+            child: Image.network(
+              snapshot.data["data"][index]["images"]["fixed_height"]["url"],
+              fit: BoxFit.cover,
+              height: 300.0,
+            ),
+          );
+        else
+          return Container(
+            child: GestureDetector(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 70.0,
+                  ),
+                  Text(
+                    "Carregar mais...",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22.0,
+                    ),
+                  )
+                ],
+              ),
+              onTap: () {
+                setState(() {
+                  _offset += 19;
+                });
+              },
+            ),
+          );
       },
     );
   }
