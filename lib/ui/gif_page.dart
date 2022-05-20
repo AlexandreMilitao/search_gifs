@@ -1,7 +1,7 @@
-// ignore_for_file: unused_field, prefer_const_constructors_in_immutables, use_key_in_widget_constructors, prefer_const_constructors
+// ignore_for_file: unused_field, prefer_const_constructors_in_immutables, use_key_in_widget_constructors, prefer_const_constructors, import_of_legacy_library_into_null_safe
 
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
+import 'package:flutter_share/flutter_share.dart';
 
 class GifPage extends StatelessWidget {
   final Map _gifData;
@@ -17,8 +17,9 @@ class GifPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
               onPressed: () {
-                Share.share(
-                  _gifData["images"]["fixed_height"]["url"],
+                FlutterShare.share(
+                  title: 'Titulo',
+                  text: _gifData["images"]["fixed_height"]["url"],
                 );
               },
               icon: Icon(Icons.share))

@@ -1,11 +1,11 @@
-// ignore_for_file: prefer_final_fields, unnecessary_null_comparison, curly_braces_in_flow_control_structures, avoid_print, prefer_const_literals_to_create_immutables, prefer_const_constructors, duplicate_ignore, avoid_unnecessary_containers
+// ignore_for_file: prefer_final_fields, unnecessary_null_comparison, curly_braces_in_flow_control_structures, avoid_print, prefer_const_literals_to_create_immutables, prefer_const_constructors, duplicate_ignore, avoid_unnecessary_containers, import_of_legacy_library_into_null_safe
 
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:share/share.dart';
+import 'package:flutter_share/flutter_share.dart';
 
 import 'gif_page.dart';
 
@@ -145,7 +145,9 @@ class _HomePageState extends State<HomePage> {
               );
             },
             onLongPress: () {
-              Share.share(snapshot.data["images"]["fixed_height"]["url"]);
+              FlutterShare.share(
+                  title: "Titulo",
+                  text: snapshot.data["images"]["fixed_height"]["url"]);
             },
           );
         else
