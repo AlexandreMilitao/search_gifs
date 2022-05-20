@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'gif_page.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -56,7 +58,16 @@ class _HomePageState extends State<HomePage> {
               decoration: InputDecoration(
                 labelText: "Pesquise Aqui!",
                 labelStyle: TextStyle(color: Colors.white),
-                border: OutlineInputBorder(),
+                prefixIcon: const Icon(
+                  Icons.search_rounded,
+                  color: Colors.white,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                    width: 2.0,
+                  ),
+                ),
               ),
               style: TextStyle(color: Colors.white, fontSize: 18.0),
               textAlign: TextAlign.center,
@@ -122,6 +133,16 @@ class _HomePageState extends State<HomePage> {
               fit: BoxFit.cover,
               height: 300.0,
             ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GifPage(
+                    snapshot.data["data"][index],
+                  ),
+                ),
+              );
+            },
           );
         else
           return Container(
